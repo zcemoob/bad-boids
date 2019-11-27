@@ -25,30 +25,44 @@ def update_boids(boids):
 	xs,ys,xvs,yvs=boids
 	a = 0.01
 	b = 0.125
+
 	# Fly towards the middle
-	for i in range(len(xs)):
-		for j in range(len(xs)):
-			xvs[i]=xvs[i]+(xs[j]-xs[i])*a/len(xs)
-	for i in range(len(xs)):
-		for j in range(len(xs)):
-			yvs[i]=yvs[i]+(ys[j]-ys[i])*a/len(xs)
+	# for i in range(len(xs)):
+	# 	for j in range(len(xs)):
+	# 		xvs[i]=xvs[i]+(xs[j]-xs[i])*a/len(xs)
+	# for i in range(len(xs)):
+	# 	for j in range(len(xs)):
+	# 		yvs[i]=yvs[i]+(ys[j]-ys[i])*a/len(xs)
+	
+	def set_range(val_s, val_vs):
+		for i in range(len(xs)):
+			for j in range(len(val_s)):
+				val_vs[i] = val_vs[i] + (val_s[j] - val_s[i])*a/len(xs)
+				    
+	set_range(xs, xvs)
+	set_range(xs, xvs)
+	
+
+
 	# Fly away from nearby boids
 	for i in range(len(xs)):
 		for j in range(len(xs)):
 			if (xs[j]-xs[i])**2 + (ys[j]-ys[i])**2 < 100:
 				xvs[i]=xvs[i]+(xs[i]-xs[j])
 				yvs[i]=yvs[i]+(ys[i]-ys[j])
+
 	# Try to match speed with nearby boids
 	for i in range(len(xs)):
 		for j in range(len(xs)):
 			if (xs[j]-xs[i])**2 + (ys[j]-ys[i])**2 < 10000:
 				xvs[i]=xvs[i]+(xvs[j]-xvs[i])*b/len(xs)
 				yvs[i]=yvs[i]+(yvs[j]-yvs[i])*b/len(xs)
+
 	# Move according to velocities
 	for i in range(len(xs)):
 		xs[i]=xs[i]+xvs[i]
 		ys[i]=ys[i]+yvs[i]
-		
+
 
 figure=plt.figure()
 axes=plt.axes(xlim=(-500,1500), ylim=(-500,1500))  #replace -500(c), 1500(d) ?
